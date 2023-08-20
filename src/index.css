@@ -2,25 +2,38 @@
 * {
   color: #020202;
   font-family: "Open Sans", sans-serif;
-}
-
-body {
-  margin: 0;
-  padding: 0;
+  padding: 0px;
+  margin: 0px;
 }
 
 .app {
-  background-color: #feb1f9;
   display: flex;
+  background-color: #feb1f9;
 }
 
-.side-bar {
-  background-color: #202123;
-  height: 100vh;
-  width: 244px;
+.main {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: space-evenly;
+  height: 100vh;
+  width: 100%;
+  align-items: center;
+  text-align: center;
+}
+
+.nav {
+  align-self: center;
+  padding: 0px;
+  margin: 0px;
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+  align-self: center;
+  gap: 20px;
+  margin: 0;
+  padding: 0;
 }
 
 button {
@@ -29,28 +42,6 @@ button {
   border-radius: 5px;
   padding: 10px;
   margin: 10px;
-}
-
-nav {
-  border-top: solid 0.5px rgba(255, 255, 255, 0.5);
-  padding: 10px;
-  margin: 10px;
-}
-
-.main {
-  height: 100vh;
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-  text-align: center;
-}
-
-.info {
-  color: rgba(255, 255, 255, 0.5);
-  font-size: 11px;
-  padding: 10px;
 }
 
 .bottom-section {
@@ -62,12 +53,16 @@ nav {
 }
 
 .input-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
   position: relative;
   width: 100%;
   max-width: 650px;
 }
 
 input {
+  align-self: center;
   width: 100%;
   border: none;
   font-size: 20px;
@@ -84,7 +79,8 @@ input:focus {
 }
 
 #submit {
-  position: absolute;
+  align-self: center;
+  position: relative;
   bottom: 15px;
   right: 0;
   cursor: pointer;

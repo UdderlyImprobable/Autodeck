@@ -87,17 +87,17 @@ const App = () => {
               </div>
             ))}
           </div>
-        </div>
-        <div className="input-container">
-          <input
-            value={userInput}
-            onChange={handleInputChange}
-            onKeyDown={handleKeyDown}
-            placeholder="Enter your message..."
-          />
-          <button id="submit" onClick={getMessages}>
-            ➢Submit
-          </button>
+          <div className="input-container">
+            <input
+              value={userInput}
+              onChange={handleInputChange}
+              onKeyDown={handleKeyDown}
+              placeholder="Enter your message..."
+            />
+            <button id="submit" onClick={getMessages}>
+              ➢Submit
+            </button>
+          </div>
         </div>
       </section>
     </div>
