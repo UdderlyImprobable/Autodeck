@@ -1,6 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700;800&display=swap");
 * {
-  color: #fff;
+  color: #020202;
   font-family: "Open Sans", sans-serif;
 }
 
@@ -10,7 +10,7 @@ body {
 }
 
 .app {
-  background-color: #343541;
+  background-color: #feb1f9;
   display: flex;
 }
 
@@ -71,7 +71,7 @@ input {
   width: 100%;
   border: none;
   font-size: 20px;
-  background-color: rgba(255, 255, 255, 0.05);
+  background-color: rgba(8, 8, 8, 0.05);
   padding: 12px 15px;
   border-radius: 5px;
   box-shadow: rgba(0, 0, 0 0.05) 0 54px 55px, rgba(0, 0, 0 0.05) 0 -12px 30px,
@@ -118,7 +118,7 @@ input:focus {
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #0a0909;
+  background-color: #fefefe;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
