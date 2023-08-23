@@ -63,7 +63,7 @@ const generateConcepts = async (userQuery) => {
 
     const message = assistantMessages.message.content;
 
-    const elements = message.split("\n" || "\n\n");
+    const elements = message.split("\n" || "\n\n" || "Answers" || "Answer");
     const filteredElements = elements.filter(
       (element) => element.trim() !== ""
     );
