@@ -1,4 +1,6 @@
 const PORT = process.env.PORT || 8000;
+import { config } from "dotenv";
+config();
 import express from "express";
 import { json } from "express";
 import fetch from "node-fetch";
@@ -8,7 +10,7 @@ const app = express();
 app.use(json());
 app.use(cors());
 
-const API_KEY = "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";
+const API_KEY = process.env.API_KEY;
 
 const generateConcepts = async (userQuery) => {
   const options = {
