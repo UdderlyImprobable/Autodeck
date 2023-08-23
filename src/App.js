@@ -76,7 +76,7 @@ const App = () => {
               >
                 <div className="flashcard-inner">
                   <div className="flashcard-front">
-                    <h4>Questions</h4>
+                    <h4>Question</h4>
                     <div>{question}</div>
                   </div>
                   <div className="flashcard-back">

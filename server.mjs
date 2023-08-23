@@ -22,74 +22,26 @@ const generateConcepts = async (userQuery) => {
       messages: [
         {
           role: "system",
-          content: `Identify the concepts in this text: ${userQuery}`,
+          content: `You are a flashcard generator`,
         },
-      ],
-      max_tokens: 100,
-    }),
-  };
 
-  try {
-    const response = await fetch(
-      "https://api.openai.com/v1/chat/completions",
-      options
-    );
-    const data = await response.json();
-    return data.choices[0].message.content;
-  } catch (error) {
-    console.error(error);
-    throw error;
-  }
-};
-
-const generateQuestions = async (concepts) => {
-  const options = {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${API_KEY}`,
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      model: "gpt-3.5-turbo",
-      messages: [
         {
-          role: "system",
-          content: `Develop 2 questions from this text, write only the questions. This is the text: ${concepts}`,
+          role: "user",
+          content: `Identify the concepts in this text, don't state them in your response: ${userQuery}`,
         },
-      ],
-      max_tokens: 100,
-    }),
-  };
 
-  try {
-    const response = await fetch(
-      "https://api.openai.com/v1/chat/completions",
-      options
-    );
-    const data = await response.json();
-    return data.choices[0].message.content;
-  } catch (error) {
-    console.error(error);
-    throw error;
-  }
-};
-
-const generateAnswers = async (questions, userQuery) => {
-  const options = {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${API_KEY}`,
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      model: "gpt-3.5-turbo",
-      messages: [
         {
-          role: "system",
-          content: `Answer the questions in this text, stating only the answers: ${questions}, verify your answers using the information in this text: ${userQuery}`,
+          role: "user",
+          content: `Develop 2 questions from the concepts identified. Write nothing but the questions`,
+        },
+
+        {
+          role: "user",
+          content: `Answer each question, verifying your answers using: ${userQuery}. Write nothing but the answers`,
         },
       ],
       max_tokens: 100,
+      n: 1,
     }),
   };
 
@@ -99,7 +51,32 @@ const generateAnswers = async (questions, userQuery) => {
       options
     );
     const data = await response.json();
-    return data.choices[0].message.content;
+    // Access assistant's messages from the choices array
+    console.log(data.choices[0]);
+    const assistantMessages = data.choices[0];
+
+    // Extract questions and answers from assistant's messages
+    const questions = [];
+    const answers = [];
+
+    const message = assistantMessages.message.content;
+
+    const elements = message.split("\n" || "\n\n");
+    const filteredElements = elements.filter(
+      (element) => element.trim() !== ""
+    );
+
+    for (const element of filteredElements) {
+      if (element.endsWith("?")) {
+        questions.push(element);
+      } else {
+        answers.push(element);
+      }
+    }
+    console.log(questions);
+    console.log(answers);
+
+    return { questions, answers };
   } catch (error) {
     console.error(error);
     throw error;
@@ -108,11 +85,28 @@ const generateAnswers = async (questions, userQuery) => {
 
 const generateFlashcards = async (userQuery) => {
   try {
-    const concepts = await generateConcepts(userQuery);
-    const questions = await generateQuestions(concepts);
-    const answers = await generateAnswers(questions, userQuery);
-    console.log({ questions, answers });
-    return { questions, answers };
+    const conceptsResponse = await generateConcepts(userQuery);
+    const concepts =
+      typeof conceptsResponse === "string"
+        ? JSON.parse(conceptsResponse)
+        : conceptsResponse;
+
+    const flashcards = [];
+
+    for (let i = 0; i < concepts.questions.length; i++) {
+      const question = concepts.questions[i];
+      const answer = concepts.answers[i];
+
+      const flashcard = {
+        id: i, // Assuming you want the index as the ID
+        question,
+        answer,
+      };
+
+      flashcards.push(flashcard);
+    }
+    console.log(flashcards);
+    return flashcards;
   } catch (error) {
     console.error(error);
     throw error;
