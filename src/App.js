@@ -48,8 +48,16 @@ const App = () => {
       const response = await fetch("http://localhost:8000", options);
       const apiData = await response.json();
 
-      setQuestions([apiData.questions]); // Update questions state
-      setAnswers([apiData.answers]); // Update answers state
+      setQuestions(
+        apiData.map((index) => {
+          return index.question;
+        })
+      ); // Update questions state
+      setAnswers(
+        apiData.map((index) => {
+          return index.answer;
+        })
+      ); // Update answers state
       setIsLoading(false);
     } catch (error) {
       console.error(error);

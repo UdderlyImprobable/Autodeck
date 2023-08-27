@@ -53,8 +53,10 @@ const generateConcepts = async (userQuery) => {
       options
     );
     const data = await response.json();
+    console.log("Data:", data);
+
     // Access assistant's messages from the choices array
-    console.log(data.choices[0]);
+    console.log(`Data.choices: ${data.choices[0]}`);
     const assistantMessages = data.choices[0];
 
     // Extract questions and answers from assistant's messages
@@ -63,9 +65,13 @@ const generateConcepts = async (userQuery) => {
 
     const message = assistantMessages.message.content;
 
-    const elements = message.split("\n" || "\n\n" || "Answers" || "Answer");
+    const elements = message.split(/\n|\n\n/);
     const filteredElements = elements.filter(
-      (element) => element.trim() !== ""
+      (element) =>
+        element.trim() !== "" &&
+        !["Answers", "Answer", "Question", "Questions", ":"].includes(
+          element.trim()
+        )
     );
 
     for (const element of filteredElements) {
