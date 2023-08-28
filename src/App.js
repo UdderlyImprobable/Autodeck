@@ -5,8 +5,9 @@ const App = () => {
   const [userInput, setUserInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [flippedIndex, setFlippedIndex] = useState(-1);
-  const [currentId, setCurrentId] = useState(0); // Initialize with the desired starting ID
+  const [currentId, setCurrentId] = useState(0);
   const [data, setData] = useState([]);
+  const [selectedFile, setSelectedFile] = useState(null);
 
   const handleCardClick = () => {
     setFlippedIndex((prevIndex) => (prevIndex === currentId ? -1 : currentId));
@@ -31,6 +32,34 @@ const App = () => {
   const handlePrevClick = () => {
     setCurrentId((prevId) => Math.max(prevId - 1, 0));
     setFlippedIndex(-1); // Reset the flipped state when changing the flashcard
+  };
+
+  const handleFileUpload = async () => {
+    if (selectedFile) {
+      setIsLoading(true);
+
+      const reader = new FileReader();
+      reader.onload = async () => {
+        const formData = new FormData();
+        formData.append("file", selectedFile);
+
+        try {
+          const response = await fetch("http://localhost:8000/upload", {
+            method: "POST",
+            body: formData,
+          });
+          const apiData = await response.json();
+          setData(apiData);
+          setCurrentId(0);
+          setIsLoading(false);
+        } catch (error) {
+          console.error(error);
+          setIsLoading(false);
+        }
+      };
+
+      reader.readAsText(selectedFile);
+    }
   };
 
   const getMessages = async () => {
@@ -93,21 +122,35 @@ const App = () => {
           )}
 
           <div className="input-container">
-            <input
-              value={userInput}
-              onChange={handleInputChange}
-              onKeyDown={handleKeyDown}
-              placeholder="Enter your message..."
-            />
-            <button id="submit" onClick={getMessages}>
-              ➢Submit
-            </button>
-            <button id="prev" onClick={handlePrevClick}>
-              Previous
-            </button>
-            <button id="next" onClick={handleNextClick}>
-              Next
-            </button>
+            <div className="submit">
+              <input
+                value={userInput}
+                onChange={handleInputChange}
+                onKeyDown={handleKeyDown}
+                placeholder="Enter your message..."
+              />
+              <button id="submit" onClick={getMessages}>
+                ➢Submit
+              </button>
+            </div>
+            <div className="upload">
+              <input
+                type="file"
+                accept=".pdf"
+                onChange={(event) => setSelectedFile(event.target.files[0])}
+              />
+              <button id="upload" onClick={handleFileUpload}>
+                📁 Upload PDF
+              </button>
+            </div>
+            <div className="navigateFlashcards">
+              <button id="prev" onClick={handlePrevClick}>
+                Previous
+              </button>
+              <button id="next" onClick={handleNextClick}>
+                Next
+              </button>
+            </div>
           </div>
         </div>
       </section>

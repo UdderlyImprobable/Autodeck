@@ -1,3 +1,4 @@
+console.log("Current working directory:", process.cwd());
 const PORT = process.env.PORT || 8000;
 import { config } from "dotenv";
 config();
@@ -5,10 +6,14 @@ import express from "express";
 import { json } from "express";
 import fetch from "node-fetch";
 import cors from "cors";
+import pdf from "pdf-parse";
+import multer from "multer";
 
 const app = express();
 app.use(json());
 app.use(cors());
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
 
 const API_KEY = process.env.API_KEY;
 
@@ -34,7 +39,7 @@ const generateConcepts = async (userQuery) => {
 
         {
           role: "user",
-          content: `Develop 2 questions from the concepts identified. Write nothing but the questions`,
+          content: `Develop questions from all the concepts identified. Write nothing but the questions`,
         },
 
         {
@@ -126,6 +131,24 @@ app.post("/", async (req, res) => {
 
   try {
     const flashcards = await generateFlashcards(userQuery);
+    res.send(flashcards);
+  } catch (error) {
+    res.status(500).send("Internal Server Error");
+    console.error(error);
+  }
+});
+
+app.post("/upload", upload.single("file"), async (req, res) => {
+  try {
+    const file = req.file; // Access the uploaded file from req.file
+
+    // Use the PDF processing library to parse the PDF and extract text
+    const pdfData = await pdf(file.buffer); // Use file.buffer to get the file data
+    const extractedText = pdfData.text;
+
+    // Call the generateFlashcards function with extracted text
+    const flashcards = await generateFlashcards(extractedText);
+
     res.send(flashcards);
   } catch (error) {
     res.status(500).send("Internal Server Error");
