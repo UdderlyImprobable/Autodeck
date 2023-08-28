@@ -81,14 +81,6 @@ input:focus {
   outline: none;
 }
 
-#submit {
-  align-self: center;
-  position: relative;
-  bottom: 15px;
-  right: 0;
-  cursor: pointer;
-}
-
 .flashcard {
   width: 300px;
   height: 150px;
@@ -125,4 +117,10 @@ input:focus {
 
 .flashcard-back {
   transform: rotateY(180deg);
+}
+
+#next,
+#prev,
+#upload {
+  cursor: pointer;
 }

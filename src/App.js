@@ -118,6 +118,14 @@ const App = () => {
                   </div>
                 </div>
               </div>
+              <div className="navigateFlashcards">
+                <button id="prev" onClick={handlePrevClick}>
+                  Previous
+                </button>
+                <button id="next" onClick={handleNextClick}>
+                  Next
+                </button>
+              </div>
             </div>
           )}
 
@@ -141,14 +149,6 @@ const App = () => {
               />
               <button id="upload" onClick={handleFileUpload}>
                 📁 Upload PDF
-              </button>
-            </div>
-            <div className="navigateFlashcards">
-              <button id="prev" onClick={handlePrevClick}>
-                Previous
-              </button>
-              <button id="next" onClick={handleNextClick}>
-                Next
               </button>
             </div>
           </div>
