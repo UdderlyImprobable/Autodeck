@@ -9,6 +9,7 @@ const App = () => {
   const [data, setData] = useState([]);
   const [selectedFile, setSelectedFile] = useState(null);
   const selectedFileRef = useRef(null);
+  const [uploadType, setUploadType] = useState("none"); // "none", "file", or "text"
 
   const handleCardClick = () => {
     setFlippedIndex((prevIndex) => (prevIndex === currentId ? -1 : currentId));
@@ -132,32 +133,50 @@ const App = () => {
           )}
 
           <div className="input-container">
-            <div className="submit">
-              <input
-                value={userInput}
-                onChange={handleInputChange}
-                onKeyDown={handleKeyDown}
-                placeholder="Enter your message..."
-              />
-              <button id="submit" onClick={getMessages}>
-                ➢Submit
-              </button>
-            </div>
-            <div className="upload">
-              <input
-                type="file"
-                accept=".pdf"
-                ref={selectedFileRef}
-                style={{ display: "none" }}
-                onChange={handleFileUpload}
-              />
+            <div className="upload-toggle">
               <button
-                id="upload"
-                onClick={() => selectedFileRef.current.click()}
+                className={uploadType === "file" ? "active" : ""}
+                onClick={() => setUploadType("file")}
               >
-                📁 Upload PDF
+                Upload File
+              </button>
+              <button
+                className={uploadType === "text" ? "active" : ""}
+                onClick={() => setUploadType("text")}
+              >
+                Text Upload
               </button>
             </div>
+            {uploadType === "text" && (
+              <div className="submit">
+                <input
+                  value={userInput}
+                  onChange={handleInputChange}
+                  onKeyDown={handleKeyDown}
+                  placeholder="Enter your message..."
+                />
+                <button id="submit" onClick={getMessages}>
+                  ➢Submit
+                </button>
+              </div>
+            )}
+            {uploadType === "file" && (
+              <div className="upload">
+                <input
+                  type="file"
+                  accept=".pdf"
+                  ref={selectedFileRef}
+                  style={{ display: "none" }}
+                  onChange={handleFileUpload}
+                />
+                <button
+                  id="upload"
+                  onClick={() => selectedFileRef.current.click()}
+                >
+                  📁 Upload PDF
+                </button>
+              </div>
+            )}
           </div>
         </div>
       </section>
