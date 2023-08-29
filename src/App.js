@@ -147,36 +147,38 @@ const App = () => {
                 Text Upload
               </button>
             </div>
-            {uploadType === "text" && (
-              <div className="submit">
-                <input
-                  value={userInput}
-                  onChange={handleInputChange}
-                  onKeyDown={handleKeyDown}
-                  placeholder="Enter your message..."
-                />
-                <button id="submit" onClick={getMessages}>
-                  ➢Submit
-                </button>
-              </div>
-            )}
-            {uploadType === "file" && (
-              <div className="upload">
-                <input
-                  type="file"
-                  accept=".pdf"
-                  ref={selectedFileRef}
-                  style={{ display: "none" }}
-                  onChange={handleFileUpload}
-                />
-                <button
-                  id="upload"
-                  onClick={() => selectedFileRef.current.click()}
-                >
-                  📁 Upload PDF
-                </button>
-              </div>
-            )}
+            <div className="inputs">
+              {uploadType === "text" && (
+                <div className="submit">
+                  <input
+                    value={userInput}
+                    onChange={handleInputChange}
+                    onKeyDown={handleKeyDown}
+                    placeholder="Enter your message..."
+                  />
+                  <button id="submit" onClick={getMessages}>
+                    ➢Submit
+                  </button>
+                </div>
+              )}
+              {uploadType === "file" && (
+                <div className="upload">
+                  <input
+                    type="file"
+                    accept=".pdf"
+                    ref={selectedFileRef}
+                    style={{ display: "none" }}
+                    onChange={handleFileUpload}
+                  />
+                  <button
+                    id="upload"
+                    onClick={() => selectedFileRef.current.click()}
+                  >
+                    📁 Upload PDF
+                  </button>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </section>
