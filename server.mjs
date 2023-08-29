@@ -74,9 +74,15 @@ const generateConcepts = async (userQuery) => {
     const filteredElements = elements.filter(
       (element) =>
         element.trim() !== "" &&
-        !["Answers", "Answer", "Question", "Questions", ":"].includes(
-          element.trim()
-        )
+        ![
+          "Answers:",
+          "Answer",
+          "Question",
+          "Questions",
+          ":",
+          " ",
+          "Answer",
+        ].includes(element.trim())
     );
 
     for (const element of filteredElements) {
