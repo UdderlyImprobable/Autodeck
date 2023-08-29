@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import "./index.css";
 
 const App = () => {
@@ -8,6 +8,7 @@ const App = () => {
   const [currentId, setCurrentId] = useState(0);
   const [data, setData] = useState([]);
   const [selectedFile, setSelectedFile] = useState(null);
+  const selectedFileRef = useRef(null);
 
   const handleCardClick = () => {
     setFlippedIndex((prevIndex) => (prevIndex === currentId ? -1 : currentId));
@@ -35,7 +36,8 @@ const App = () => {
   };
 
   const handleFileUpload = async () => {
-    if (selectedFile) {
+    if (selectedFileRef.current && selectedFileRef.current.files.length > 0) {
+      const selectedFile = selectedFileRef.current.files[0];
       setIsLoading(true);
 
       const reader = new FileReader();
@@ -145,9 +147,14 @@ const App = () => {
               <input
                 type="file"
                 accept=".pdf"
-                onChange={(event) => setSelectedFile(event.target.files[0])}
+                ref={selectedFileRef}
+                style={{ display: "none" }}
+                onChange={handleFileUpload}
               />
-              <button id="upload" onClick={handleFileUpload}>
+              <button
+                id="upload"
+                onClick={() => selectedFileRef.current.click()}
+              >
                 📁 Upload PDF
               </button>
             </div>
