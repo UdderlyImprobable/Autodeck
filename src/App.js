@@ -1,5 +1,6 @@
 import React, { useState, useRef } from "react";
 import "./index.css";
+import logo from "./autodeckLogo.svg";
 
 const App = () => {
   const [userInput, setUserInput] = useState("");
@@ -98,86 +99,91 @@ const App = () => {
     <div className="app">
       <section className="main">
         <div className="nav">
-          <h1>Autodeck</h1>
+          <header className="App-header">
+            <img src={logo} className="logo" alt="logo" />
+          </header>
         </div>
-        <div className="body">
-          {isLoading && <div className="loading">Loading...</div>}
-          {data.length > 0 && ( // Only render when there are flashcards
-            <div className="flashcards">
-              <div
-                className={`flashcard ${
-                  flippedIndex === currentId ? "flipped" : ""
-                }`}
-                onClick={handleCardClick}
-              >
-                <div className="flashcard-inner">
-                  <div className="flashcard-front">
-                    <h4>Question</h4>
-                    <div>{data[currentId]?.question}</div>
-                  </div>
-                  <div className="flashcard-back">
-                    <h4>Answer</h4>
-                    <div>{data[currentId]?.answer}</div>
+        <div className="body-container">
+          <div className="side-bar"></div>
+          <div className="body">
+            {isLoading && <div className="loading">Loading...</div>}
+            {data.length > 0 && ( // Only render when there are flashcards
+              <div className="flashcards">
+                <div
+                  className={`flashcard ${
+                    flippedIndex === currentId ? "flipped" : ""
+                  }`}
+                  onClick={handleCardClick}
+                >
+                  <div className="flashcard-inner">
+                    <div className="flashcard-front">
+                      <h4>Question</h4>
+                      <div>{data[currentId]?.question}</div>
+                    </div>
+                    <div className="flashcard-back">
+                      <h4>Answer</h4>
+                      <div>{data[currentId]?.answer}</div>
+                    </div>
                   </div>
                 </div>
+                <div className="navigateFlashcards">
+                  <button id="prev" onClick={handlePrevClick}>
+                    Previous
+                  </button>
+                  <button id="next" onClick={handleNextClick}>
+                    Next
+                  </button>
+                </div>
               </div>
-              <div className="navigateFlashcards">
-                <button id="prev" onClick={handlePrevClick}>
-                  Previous
-                </button>
-                <button id="next" onClick={handleNextClick}>
-                  Next
-                </button>
-              </div>
-            </div>
-          )}
+            )}
 
-          <div className="input-container">
-            <div className="upload-toggle">
-              <button
-                className={uploadType === "file" ? "active" : ""}
-                onClick={() => setUploadType("file")}
-              >
-                Upload File
-              </button>
-              <button
-                className={uploadType === "text" ? "active" : ""}
-                onClick={() => setUploadType("text")}
-              >
-                Text Upload
-              </button>
-            </div>
-            <div className="inputs">
-              {uploadType === "text" && (
-                <div className="submit">
-                  <input
-                    value={userInput}
-                    onChange={handleInputChange}
-                    onKeyDown={handleKeyDown}
-                    placeholder="Enter your message..."
-                  />
-                  <button id="submit" onClick={getMessages}>
-                    ➢Submit
-                  </button>
-                </div>
-              )}
-              {uploadType === "file" && (
-                <div className="upload">
-                  <input
-                    type="file"
-                    accept=".pdf"
-                    ref={selectedFileRef}
-                    style={{ display: "none" }}
-                    onChange={handleFileUpload}
-                  />
-                  <button
-                    id="upload"
-                    onClick={() => selectedFileRef.current.click()}
-                  >
-                    📁 Upload PDF
-                  </button>
-                </div>
-              )}
+            <div className="input-container">
+              <div className="upload-toggle">
+                <button
+                  className={uploadType === "file" ? "active" : ""}
+                  onClick={() => setUploadType("file")}
+                >
+                  Upload File
+                </button>
+                <button
+                  className={uploadType === "text" ? "active" : ""}
+                  onClick={() => setUploadType("text")}
+                >
+                  Text Upload
+                </button>
+              </div>
+              <div className="inputs">
+                {uploadType === "text" && (
+                  <div className="submit">
+                    <input
+                      value={userInput}
+                      onChange={handleInputChange}
+                      onKeyDown={handleKeyDown}
+                      placeholder="Enter your message..."
+                    />
+                    <button id="submit" onClick={getMessages}>
+                      ➢Submit
+                    </button>
+                  </div>
+                )}
+                {uploadType === "file" && (
+                  <div className="upload">
+                    <input
+                      type="file"
+                      accept=".pdf"
+                      ref={selectedFileRef}
+                      style={{ display: "none" }}
+                      onChange={handleFileUpload}
+                    />
+                    <button
+                      id="upload"
+                      onClick={() => selectedFileRef.current.click()}
+                    >
+                      📁 Upload PDF
+                    </button>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         </div>
