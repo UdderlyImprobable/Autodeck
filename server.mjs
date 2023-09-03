@@ -29,7 +29,7 @@ const generateConcepts = async (userQuery) => {
       messages: [
         {
           role: "system",
-          content: `You are a flashcard generator`,
+          content: `You are an effective and efficient flashcard generator`,
         },
 
         {
@@ -39,7 +39,7 @@ const generateConcepts = async (userQuery) => {
 
         {
           role: "user",
-          content: `Develop questions from all the concepts identified. Write nothing but the questions`,
+          content: `Develop all possible questions from the concepts identified. End each question with a question mark`,
         },
 
         {
@@ -47,7 +47,7 @@ const generateConcepts = async (userQuery) => {
           content: `Answer each question, verifying your answers using: ${userQuery}. Write nothing but the answers`,
         },
       ],
-      max_tokens: 100,
+      max_tokens: 1000,
       n: 1,
     }),
   };
