@@ -39,7 +39,7 @@ const generateConcepts = async (userQuery) => {
 
         {
           role: "user",
-          content: `Develop all possible questions from the concepts identified. End each question with a question mark`,
+          content: `Develop all possible questions from the concepts identified. Stay within the bounds of the text and don't generate questions with answers that can't be gotten from the text. Write nothing but the questions and end each question with a question mark`,
         },
 
         {
@@ -58,10 +58,10 @@ const generateConcepts = async (userQuery) => {
       options
     );
     const data = await response.json();
-    console.log("Data:", data);
+    console.log("Data: ", data);
 
     // Access assistant's messages from the choices array
-    console.log(`Data.choices: ${data.choices[0]}`);
+    console.log("Data.choices: ", data.choices[0]);
     const assistantMessages = data.choices[0];
 
     // Extract questions and answers from assistant's messages
@@ -84,8 +84,10 @@ const generateConcepts = async (userQuery) => {
           "Answer",
         ].includes(element.trim())
     );
-
-    for (const element of filteredElements) {
+    const trimmedElements = filteredElements.map(function (str) {
+      return str.trim();
+    });
+    for (const element of trimmedElements) {
       if (element.endsWith("?")) {
         questions.push(element);
       } else {
@@ -145,16 +147,16 @@ app.post("/", async (req, res) => {
 });
 
 app.post("/upload", upload.single("file"), async (req, res) => {
+  const file = req.file; // Access the uploaded file from req.file
+
+  // Use the PDF processing library to parse the PDF and extract text
+  const pdfData = await pdf(file.buffer); // Use file.buffer to get the file data
+  const extractedText = pdfData.text;
+  console.log(extractedText);
   try {
-    const file = req.file; // Access the uploaded file from req.file
-
-    // Use the PDF processing library to parse the PDF and extract text
-    const pdfData = await pdf(file.buffer); // Use file.buffer to get the file data
-    const extractedText = pdfData.text;
-
     // Call the generateFlashcards function with extracted text
     const flashcards = await generateFlashcards(extractedText);
-
+    console.log(flashcards);
     res.send(flashcards);
   } catch (error) {
     res.status(500).send("Internal Server Error");
