@@ -1,4 +1,3 @@
-console.log("Current working directory:", process.cwd());
 const PORT = process.env.PORT || 8000;
 import { config } from "dotenv";
 config();
@@ -25,21 +24,16 @@ const generateConcepts = async (userQuery) => {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      model: "gpt-3.5-turbo",
+      model: "gpt-3.5-turbo-16k",
       messages: [
         {
           role: "system",
-          content: `You are an effective and efficient flashcard generator`,
+          content: `You are a flashcard generator`,
         },
 
         {
           role: "user",
-          content: `Identify the concepts in this text, don't state them in your response: ${userQuery}`,
-        },
-
-        {
-          role: "user",
-          content: `Develop all possible questions from the concepts identified. Stay within the bounds of the text and don't generate questions with answers that can't be gotten from the text. Write nothing but the questions and end each question with a question mark`,
+          content: `Develop 70 questions from this text: ${userQuery}. Stay within the bounds of the text and don't generate questions with answers that can't be gotten from the text. Write nothing but the questions. End each question with a question mark`,
         },
 
         {
@@ -58,10 +52,8 @@ const generateConcepts = async (userQuery) => {
       options
     );
     const data = await response.json();
-    console.log("Data: ", data);
 
     // Access assistant's messages from the choices array
-    console.log("Data.choices: ", data.choices[0]);
     const assistantMessages = data.choices[0];
 
     // Extract questions and answers from assistant's messages
@@ -94,8 +86,6 @@ const generateConcepts = async (userQuery) => {
         answers.push(element);
       }
     }
-    console.log(questions);
-    console.log(answers);
 
     return { questions, answers };
   } catch (error) {
@@ -126,7 +116,6 @@ const generateFlashcards = async (userQuery) => {
 
       flashcards.push(flashcard);
     }
-    console.log(flashcards);
     return flashcards;
   } catch (error) {
     console.error(error);
@@ -152,7 +141,6 @@ app.post("/upload", upload.single("file"), async (req, res) => {
   // Use the PDF processing library to parse the PDF and extract text
   const pdfData = await pdf(file.buffer); // Use file.buffer to get the file data
   const extractedText = pdfData.text;
-  console.log(extractedText);
   try {
     // Call the generateFlashcards function with extracted text
     const flashcards = await generateFlashcards(extractedText);
